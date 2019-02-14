@@ -1,9 +1,7 @@
 
  
  theUILang.ratiocolorName = "Ratiocolor";
- theUILang.ratiocolorColors = "Colors in hex sperated by ',' (Format: 0000ff,ff0000,...)";
- theUILang.ratiocolorLevels = "Levels seperated by ','. Must start with 0 (Format: 0,0.5,1,...)";
- theUILang.ratiocolorLengthError = "Ratiocolor: There must be the same numbers of levels and colors";
- theUILang.ratiocolorLevel0 = "Ratiocolor: The first level must be 0";
+ theUILang.ratiocolorLengthError = "Ratiocolor : Il n'y a pas le même nombre de niveaux et de couleurs.";
+ theUILang.ratiocolorLevel0 = "Ratiocolor : Le premier niveau n'est pas 0.";
  
  thePlugins.get("ratiocolor").langLoaded();
