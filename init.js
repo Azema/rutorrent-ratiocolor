@@ -226,7 +226,7 @@ plugin.onLangLoaded = function() {
            theWebUI.tables.trt.obj.refreshRows = function(height, fromScroll){
                plugin.tempFunc.call(theWebUI.tables.trt.obj, height, fromScroll);
                theWebUI.setRatioColors1();
-               if(allRatioColumns){
+               if(allRatioColumns && thePlugins.isInstalled("trafic")){
                    theWebUI.setRatioColors2();
                    theWebUI.setRatioColors3();
                    theWebUI.setRatioColors4();
