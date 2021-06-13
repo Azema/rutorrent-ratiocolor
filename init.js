@@ -31,7 +31,7 @@ colors = [ [255, 0, 0],
 changeWhat = "font";
 
 // Set colors to all ratio columns ('trafic' plugin)
-allRatioColumns = true;
+allRatioColumns = false;
 
 settings = false; // not yet working as it should
 
@@ -58,6 +58,39 @@ function colorMul(a, mul){
 function colorRGB(color){
     return "rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")";
 }
+
+theWebUI.setRatioColorDetails = function(){
+  var $elt = $('#ra'),
+      ratio = $elt.text(),
+      color = null,
+      proc = 0;
+
+  $.each(levels, function(index, level) {
+    if (ratio < level) {
+      leveldiff = level - levels[index - 1];
+      proc = (ratio - levels[index - 1]) / leveldiff;
+      diffColor = colorSub(colors[index], colors[index - 1]);
+      color = colorAdd(colorMul(diffColor, proc), colors[index - 1]);
+      return false;
+    }
+  });
+
+  if (color == null) {
+    color = colors[colors.length - 1];
+  }
+
+  switch(changeWhat)
+  {
+    case "font":
+      $elt.css("color", colorRGB(color));
+      break;
+    case "cell-background":
+    default:
+      $elt.css("background-color", colorRGB(color));
+      $elt.css("background-image", "none");
+      break;
+  }
+};
 
 theWebUI.setRatioColors = function(){
     $(".stable-List-col-6").each(function(index) {
@@ -226,6 +259,7 @@ plugin.onLangLoaded = function() {
                if(allRatioColumns && thePlugins.isInstalled("trafic"))
                    theWebUI.setRatioColors2();
             };
+              
             if(settings){
                 rcSettingsDiv = $('<div>').attr("id","st_ratiocolor");
                 fieldset = $('<fieldset>').html("<legend>" + theUILang.ratiocolorName + "</legend>");
@@ -253,6 +287,16 @@ plugin.onLangLoaded = function() {
     }
 }
 
+plugin.updateDetails = theWebUI.updateDetails;
+theWebUI.updateDetails = function()
+{
+    plugin.updateDetails.call(this);
+    if(plugin.enabled && (this.dID != "") && this.torrents[this.dID])
+    {
+      theWebUI.setRatioColorDetails();
+    }
+}
+
 theWebUI.ratiocolorLevelsbar = function(levels, colors){
     div = $("<div>").attr("id","ratiocolorLevelsbar");
     width = Math.floor(100/(colors.length-1)) + "%";
@@ -277,3 +321,5 @@ plugin.onRemove = function()
         this.removePageFromOptions("st_ratiocolors");
     }
 }
+
+/* vim: set ts=2 sw=2 ai nu et : */
